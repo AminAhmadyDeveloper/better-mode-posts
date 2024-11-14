@@ -1,13 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "dist/server/server.tsx",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/client/index.html",
-      "use": "@vercel/static"
+      "source": "/((?!assets/).*)",
+      "destination": "/api/ssr.js"
     }
   ]
 }
