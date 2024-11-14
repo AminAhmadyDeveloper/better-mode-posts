@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/server/server.tsx",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/client/index.html",
+      "use": "@vercel/static"
+    }
+  ]
+}
