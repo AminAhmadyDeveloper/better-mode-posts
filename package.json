@@ -1,0 +1,49 @@
+{
+  "name": "better-mode-posts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/server.tsx --outDir dist/server",
+    "preview": "cross-env NODE_ENV=production node server",
+    "gql:compile": "graphql-codegen",
+    "gql:watch": "graphql-codegen -w"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.10",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "compression": "^1.7.4",
+    "express": "^5.0.1",
+    "graphql": "^16.9.0",
+    "install": "^0.13.0",
+    "lucide-react": "^0.456.0",
+    "react": "^19.0.0-rc-2ec26bc4-20241111",
+    "react-dom": "^19.0.0-rc-2ec26bc4-20241111",
+    "react-router-dom": "^6.28.0",
+    "sirv": "^3.0.0",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.3",
+    "@graphql-codegen/client-preset": "^4.5.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@parcel/watcher": "^2.5.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.7",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.9"
+  }
+}
