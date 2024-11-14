@@ -1,18 +1,26 @@
 {
-  "builds": [
-    {
-      "src": "dist/server/server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/client/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "dist/server/server.js"
-    }
-  ]
-}
+    "version": 3,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node",
+        "config": {
+          "maxDuration": 10
+        }
+      },
+      {
+        "src": "vite.config.ts",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "dist/client"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "server.js"
+      }
+    ]
+  }
+  
