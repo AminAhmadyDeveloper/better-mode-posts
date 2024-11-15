@@ -5,16 +5,12 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "distDir": "dist/server",
         "maxDuration": 10
       }
     },
     {
-      "src": "src/**/*",
-      "use": "@vercel/static",
-      "config": {
-        "distDir": "dist/client"
-      }
+      "src": "dist/client",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
