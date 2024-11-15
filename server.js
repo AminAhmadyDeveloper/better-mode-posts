@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import express from "express";
 import { Transform } from "node:stream";
+import UniversalCookie from "universal-cookie";
 
 // Constants
 const isProduction = process.env.NODE_ENV === "production";
@@ -40,6 +41,7 @@ if (!isProduction) {
 app.use("*all", async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, "");
+    const cookies = new UniversalCookie(req.headers.cookie).getAll();
 
     let template;
     let render;
@@ -55,7 +57,7 @@ app.use("*all", async (req, res) => {
 
     let didError = false;
 
-    const { pipe, abort } = render(url, ssrManifest, {
+    const { pipe, abort } = render(url, cookies, ssrManifest, {
       onShellError() {
         res.status(500);
         res.set({ "Content-Type": "text/html" });

@@ -14,7 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-    "\n  query userById($id: Int!) {\n    userById(id: $id) {\n      name\n    }\n  }\n": types.UserByIdDocument,
+    "\n  query Tokens($networkDomain: String!) {\n    tokens(networkDomain: $networkDomain) {\n      accessToken\n      network {\n        name\n      }\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        __typename\n      }\n    }\n  }\n": types.TokensDocument,
+    "\n  mutation LoginNetwork($usernameOrEmail: String!, $password: String!) {\n    loginNetwork(\n      input: { usernameOrEmail: $usernameOrEmail, password: $password }\n    ) {\n      accessToken\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        email\n        profilePicture {\n          __typename\n          ... on Image {\n            urls {\n              full\n              large\n              medium\n              small\n              thumb\n            }\n            url\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n  }\n": types.LoginNetworkDocument,
 };
 
 /**
@@ -34,7 +35,11 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query userById($id: Int!) {\n    userById(id: $id) {\n      name\n    }\n  }\n"): (typeof documents)["\n  query userById($id: Int!) {\n    userById(id: $id) {\n      name\n    }\n  }\n"];
+export function gql(source: "\n  query Tokens($networkDomain: String!) {\n    tokens(networkDomain: $networkDomain) {\n      accessToken\n      network {\n        name\n      }\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query Tokens($networkDomain: String!) {\n    tokens(networkDomain: $networkDomain) {\n      accessToken\n      network {\n        name\n      }\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        __typename\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation LoginNetwork($usernameOrEmail: String!, $password: String!) {\n    loginNetwork(\n      input: { usernameOrEmail: $usernameOrEmail, password: $password }\n    ) {\n      accessToken\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        email\n        profilePicture {\n          __typename\n          ... on Image {\n            urls {\n              full\n              large\n              medium\n              small\n              thumb\n            }\n            url\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n  }\n"): (typeof documents)["\n  mutation LoginNetwork($usernameOrEmail: String!, $password: String!) {\n    loginNetwork(\n      input: { usernameOrEmail: $usernameOrEmail, password: $password }\n    ) {\n      accessToken\n      role {\n        name\n        scopes\n        __typename\n      }\n      member {\n        id\n        name\n        email\n        profilePicture {\n          __typename\n          ... on Image {\n            urls {\n              full\n              large\n              medium\n              small\n              thumb\n            }\n            url\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

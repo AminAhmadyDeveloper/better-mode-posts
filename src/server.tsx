@@ -1,4 +1,5 @@
 import App from "@/app";
+import { CookieProvider } from "@/providers/cookie-provider";
 import {
   type RenderToPipeableStreamOptions,
   renderToPipeableStream,
@@ -7,6 +8,7 @@ import { StaticRouter } from "react-router-dom/server";
 
 export function render(
   _url: string,
+  cookies: any,
   _ssrManifest?: string,
   options?: RenderToPipeableStreamOptions
 ) {
@@ -14,7 +16,9 @@ export function render(
 
   return renderToPipeableStream(
     <StaticRouter location={absoluteUrl}>
-      <App />
+      <CookieProvider cookies={cookies}>
+        <App />
+      </CookieProvider>
     </StaticRouter>,
     options
   );

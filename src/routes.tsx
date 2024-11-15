@@ -1,10 +1,13 @@
 import AboutPage from "@/pages/about/about-page";
 import HomePage from "@/pages/home/home-page";
 import { Routes as _Routes, Route } from "react-router-dom";
-import MainLayout from "@/layouts/main-layout";
+import MainLayout from "@/pages/main-layout";
 
 import { FC } from "react";
 import NotFoundPage from "@/pages/not-found-page";
+import { AuthLayout } from "@/pages/auth/auth-layout";
+import SelectNetworkPage from "@/pages/auth/select-network/select-network-page";
+import LoginPage from "@/pages/auth/login/login-page";
 
 export interface RoutesProps {}
 
@@ -15,7 +18,11 @@ export const Routes: FC<RoutesProps> = () => {
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
       </Route>
-        <Route path="*" element={<NotFoundPage />} />
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route index element={<SelectNetworkPage />} />
+        <Route path="login" element={<LoginPage />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </_Routes>
   );
 };
