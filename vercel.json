@@ -2,10 +2,8 @@
   "version": 2,
   "functions": {
     "api/ssr.js": {
-       "runtime": "nodejs20.x"
+      "runtime": "nodejs18.x"
     }
   },
-  "routes": [
-    { "src": "/.*", "dest": "/api/ssr.js" }
-  ]
+  "routes": [{ "src": "/.*", "dest": "/api/ssr.js" }]
 }
