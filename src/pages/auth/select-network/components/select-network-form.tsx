@@ -72,8 +72,6 @@ export const SelectNetworkForm = () => {
 
   const onSubmitForm = selectNetworkForm.handleSubmit(handleSubmit);
 
-  console.log(selectNetworkQueryResult.error);
-
   return (
     <Fragment>
       <Form {...selectNetworkForm}>
