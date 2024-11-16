@@ -1,8 +1,9 @@
 {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "version": 2,
+  "functions": {
+    "api/ssr.js": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "routes": [{ "src": "/.*", "dest": "/api/ssr.js" }]
+}

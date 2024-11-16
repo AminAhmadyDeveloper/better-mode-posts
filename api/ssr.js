@@ -37,11 +37,6 @@ if (!isProduction) {
   app.use(base, sirv("./dist/client", { extensions: [] }));
 }
 
-/**
- * @param {import('@vercel/node').VercelRequest} req
- * @param {import('@vercel/node').VercelResponse} res
- */
-
 // Serve HTML
 app.use("*all", async (req, res) => {
   try {
@@ -57,7 +52,7 @@ app.use("*all", async (req, res) => {
       render = (await vite.ssrLoadModule("/src/server.tsx")).render;
     } else {
       template = templateHtml;
-      render = (await import("./dist/server/server.js")).render;
+      render = (await import("../dist/server/server.js")).render;
     }
 
     let didError = false;

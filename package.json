@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server",
+    "dev": "node api/ssr",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --ssrManifest --outDir dist/client",
     "build:server": "vite build --ssr src/server.tsx --outDir dist/server",
-    "preview": "cross-env NODE_ENV=production node server",
+    "preview": "cross-env NODE_ENV=production node api/ssr",
     "gql:compile": "graphql-codegen",
     "gql:watch": "graphql-codegen -w"
   },

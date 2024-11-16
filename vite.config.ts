@@ -10,6 +10,6 @@ export default defineConfig({
   },
   plugins: [react()],
   ssr: {
-    noExternal: ["react-router-dom", "@apollo/client"],
+    noExternal: true,
   },
 });
