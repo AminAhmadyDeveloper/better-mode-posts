@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/ssr.js": {
-      "runtime": "nodejs"
+      "runtime": "@vercel/node@3.2.24"
     }
   },
   "routes": [{ "src": "/.*", "dest": "/api/ssr.js" }]
