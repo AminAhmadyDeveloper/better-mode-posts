@@ -1,12 +1,11 @@
 {
-    "version": 2,
-    "functions": {
-      "api/ssr.js": {
-        "runtime": "nodejs22.x"
-      }
-    },
-    "routes": [
-      { "src": "/.*", "dest": "/api/ssr.js" }
-    ]
-  }
-  
+  "version": 2,
+  "functions": {
+    "api/ssr.js": {
+      "runtime": "@vercel/node@20.x"
+    }
+  },
+  "routes": [
+    { "src": "/.*", "dest": "/api/ssr.js" }
+  ]
+}
