@@ -3,7 +3,7 @@ import HomePage from "@/pages/home/home-page";
 import { Routes as _Routes, Route } from "react-router-dom";
 import MainLayout from "@/pages/main-layout";
 
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import NotFoundPage from "@/pages/not-found-page";
 import { AuthLayout } from "@/pages/auth/auth-layout";
 import SelectNetworkPage from "@/pages/auth/select-network/select-network-page";
@@ -18,7 +18,14 @@ export const Routes: FC<RoutesProps> = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
-        <Route path="post/:postId" element={<PostPage />} />
+        <Route
+          path="post/:postId"
+          element={
+            <Suspense>
+              <PostPage />
+            </Suspense>
+          }
+        />
       </Route>
       <Route path="/auth" element={<AuthLayout />}>
         <Route index element={<SelectNetworkPage />} />

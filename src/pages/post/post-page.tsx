@@ -2,7 +2,7 @@ import { gql } from "@/__generated__";
 import { Container } from "@/components/layout/container";
 import { For } from "@/components/utils/for";
 import { normalizeHtml, timeSince } from "@/lib/utils";
-import { useQuery } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 
 const getPost = gql(
@@ -12,7 +12,7 @@ const getPost = gql(
 export const PostPage = () => {
   const { postId } = useParams();
 
-  const { data } = useQuery(getPost, { variables: { postId: postId || "" } });
+  const { data } = useSuspenseQuery(getPost, { variables: { postId: postId || "" } });
 
   return (
     <main>
