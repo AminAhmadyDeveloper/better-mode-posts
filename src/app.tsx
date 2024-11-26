@@ -1,6 +1,7 @@
 import { ApolloProvider } from "@/providers/apollo-provider";
 import { StylesProvider } from "@/providers/styles-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { NuqsAdapter } from "nuqs/adapters/react-router";
 import { Routes } from "@/routes";
 import { FC } from "react";
 
@@ -11,7 +12,9 @@ const App: FC<AppProps> = () => {
     <ThemeProvider defaultTheme="dark" storageKey="ui-theme">
       <StylesProvider />
       <ApolloProvider>
-        <Routes />
+        <NuqsAdapter>
+          <Routes />
+        </NuqsAdapter>
       </ApolloProvider>
     </ThemeProvider>
   );

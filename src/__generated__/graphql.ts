@@ -656,6 +656,10 @@ export type Chat = {
   __typename?: "Chat";
   /** The ID of the chat */
   _id: Scalars["ID"]["output"];
+  /** The ID of the avatar image */
+  avatarId?: Maybe<Scalars["String"]["output"]>;
+  /** The URL of the avatar image */
+  avatarUrl?: Maybe<Scalars["String"]["output"]>;
   /** The date the chat was created */
   createdAt: Scalars["DateTime"]["output"];
   /** The ID of the user who created the chat */
@@ -881,6 +885,8 @@ export type CreateFileInput = {
 };
 
 export type CreateGroupChatInput = {
+  /** ID of the group avatar image */
+  avatarId?: InputMaybe<Scalars["String"]["input"]>;
   /** List up to 10 members as initial group participants. Use addMembersToGroup mutation after creating the group add more members. */
   memberIds: Array<Scalars["String"]["input"]>;
   /** Name of the group */
@@ -1980,6 +1986,11 @@ export type JwtSsoAuthUrls = {
   signUpUrl?: Maybe<Scalars["String"]["output"]>;
 };
 
+export type JwtSsoToken = {
+  __typename?: "JwtSsoToken";
+  clientSecret: Scalars["String"]["output"];
+};
+
 export type KeyValue = {
   __typename?: "KeyValue";
   key: Scalars["String"]["output"];
@@ -2863,6 +2874,7 @@ export type Mutation = {
   readNotification: Action;
   readNotifications: Action;
   readSpace: Action;
+  regenerateJwtSsoToken: JwtSsoToken;
   /** Remove the FCM token from the subscriber settings. */
   removeFcmTokenFromSubscriberSettings: Action;
   /** @deprecated This mutation will be replaced by deleteCollection */
@@ -5580,7 +5592,7 @@ export type PostTypeMapping = {
   __typename?: "PostTypeMapping";
   default?: Maybe<Scalars["String"]["output"]>;
   description?: Maybe<Scalars["String"]["output"]>;
-  field: PostFieldsEnum;
+  field?: Maybe<PostFieldsEnum>;
   isMainContent?: Maybe<Scalars["Boolean"]["output"]>;
   isSearchable?: Maybe<Scalars["Boolean"]["output"]>;
   key: Scalars["String"]["output"];
@@ -8979,6 +8991,116 @@ export type LoginNetworkMutation = {
   };
 };
 
+export type GetPostsQueryVariables = Exact<{
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  excludePins?: InputMaybe<Scalars["Boolean"]["input"]>;
+  filterBy?: InputMaybe<Array<PostListFilterByInput> | PostListFilterByInput>;
+  limit: Scalars["Int"]["input"];
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  orderBy?: InputMaybe<PostListOrderByEnum>;
+  postTypeIds?: InputMaybe<
+    Array<Scalars["String"]["input"]> | Scalars["String"]["input"]
+  >;
+  reverse?: InputMaybe<Scalars["Boolean"]["input"]>;
+  spaceIds?: InputMaybe<Array<Scalars["ID"]["input"]> | Scalars["ID"]["input"]>;
+}>;
+
+export type GetPostsQuery = {
+  __typename?: "Query";
+  getPosts: {
+    __typename: "PaginatedPost";
+    totalCount?: number | null;
+    nodes?: Array<{
+      __typename: "Post";
+      id: string;
+      updatedAt: any;
+      description?: string | null;
+      title?: string | null;
+      owner?: {
+        __typename: "SpaceMember";
+        member?: {
+          __typename: "Member";
+          name?: string | null;
+          profilePicture?:
+            | { __typename: "Emoji" }
+            | { __typename: "File" }
+            | { __typename: "Glyph" }
+            | { __typename: "Image"; url: string }
+            | null;
+        } | null;
+      } | null;
+      customSeoDetail?: {
+        __typename: "CustomSeoDetail";
+        thumbnail?:
+          | { __typename: "Emoji" }
+          | { __typename: "File" }
+          | { __typename: "Glyph" }
+          | { __typename: "Image"; url: string }
+          | null;
+      } | null;
+      tags?: Array<{ __typename: "Tag"; title: string }> | null;
+      reactions?: Array<{
+        __typename: "PostReactionDetail";
+        reaction: string;
+      }> | null;
+    }> | null;
+    pageInfo: {
+      __typename: "PageInfo";
+      hasNextPage: boolean;
+      endCursor?: string | null;
+    };
+  };
+};
+
+export type GetPostQueryVariables = Exact<{
+  postId: Scalars["ID"]["input"];
+}>;
+
+export type GetPostQuery = {
+  __typename?: "Query";
+  getPost: {
+    __typename: "Post";
+    id: string;
+    updatedAt: any;
+    description?: string | null;
+    title?: string | null;
+    owner?: {
+      __typename: "SpaceMember";
+      member?: {
+        __typename: "Member";
+        name?: string | null;
+        profilePicture?:
+          | { __typename: "Emoji" }
+          | { __typename: "File" }
+          | { __typename: "Glyph" }
+          | { __typename: "Image"; url: string }
+          | null;
+      } | null;
+    } | null;
+    contentSummary?: {
+      __typename: "PostContentSummary";
+      summary: string;
+    } | null;
+    fields?: Array<{
+      __typename: "CustomField";
+      value?: string | null;
+      key: string;
+    }> | null;
+    thumbnail?:
+      | { __typename: "Emoji" }
+      | { __typename: "File" }
+      | { __typename: "Glyph" }
+      | { __typename: "Image"; url: string }
+      | null;
+    tags?: Array<{ __typename: "Tag"; title: string }> | null;
+    reactions?: Array<{
+      __typename: "PostReactionDetail";
+      reaction: string;
+    }> | null;
+  };
+};
+
 export const TokensDocument = {
   kind: "Document",
   definitions: [
@@ -9263,3 +9385,642 @@ export const LoginNetworkDocument = {
   LoginNetworkMutation,
   LoginNetworkMutationVariables
 >;
+export const GetPostsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetPosts" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "after" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "before" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "excludePins" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "filterBy" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: {
+                kind: "NamedType",
+                name: { kind: "Name", value: "PostListFilterByInput" },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "orderBy" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "PostListOrderByEnum" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "postTypeIds" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: {
+                kind: "NamedType",
+                name: { kind: "Name", value: "String" },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reverse" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "spaceIds" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getPosts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "after" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "after" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "before" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "before" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "excludePins" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "excludePins" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filterBy" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "filterBy" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "orderBy" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "postTypeIds" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "postTypeIds" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reverse" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reverse" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "spaceIds" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "spaceIds" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "nodes" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "owner" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "member" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "profilePicture",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "InlineFragment",
+                                          typeCondition: {
+                                            kind: "NamedType",
+                                            name: {
+                                              kind: "Name",
+                                              value: "Image",
+                                            },
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "__typename",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "__typename",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "__typename" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "updatedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "customSeoDetail" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "InlineFragment",
+                                    typeCondition: {
+                                      kind: "NamedType",
+                                      name: { kind: "Name", value: "Image" },
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "url" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "__typename",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "__typename" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "tags" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reactions" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reaction" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "pageInfo" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasNextPage" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "endCursor" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>;
+export const GetPostDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetPost" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "postId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getPost" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "postId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "postId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "owner" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "member" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "profilePicture" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "InlineFragment",
+                                    typeCondition: {
+                                      kind: "NamedType",
+                                      name: { kind: "Name", value: "Image" },
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "url" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "__typename",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "__typename" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contentSummary" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "summary" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "value" } },
+                      { kind: "Field", name: { kind: "Name", value: "key" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "thumbnail" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: { kind: "Name", value: "Image" },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "url" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tags" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reactions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reaction" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPostQuery, GetPostQueryVariables>;

@@ -15,12 +15,20 @@ import { useWindowScroll } from "@/hooks/use-window-scroll";
 import { cn } from "@/lib/utils";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MenuIcon, StarIcon } from "lucide-react";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, HTMLAttributeAnchorTarget, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const routes: { name: string; href: string }[] = [
+const routes: {
+  name: string;
+  href: string;
+  target?: HTMLAttributeAnchorTarget;
+}[] = [
   { name: "Posts", href: "/" },
-  { name: "Contact Me", href: "/auth" },
+  {
+    name: "Contact Me",
+    href: "https://aminahmady.vercel.app/",
+    target: "_blank",
+  },
 ] as const;
 
 interface HeaderProps {
@@ -28,7 +36,7 @@ interface HeaderProps {
 }
 
 export const Header: FC<HeaderProps> = ({ hideNavigationMenu }) => {
-    const { user } = useUserData();
+  const { user } = useUserData();
   const [coordinations] = useWindowScroll();
 
   const headerRef = useRef<HTMLElement | null>(null);
@@ -97,6 +105,7 @@ export const Header: FC<HeaderProps> = ({ hideNavigationMenu }) => {
                       key={route.name}
                       className="text-sm font-medium text-muted-foreground/70 transition-colors hover:text-muted-foreground"
                       to={route.href}
+                      target={route.target}
                     >
                       {route.name}
                     </Link>

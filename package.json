@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
+    "@apollo/react-ssr": "^4.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -27,6 +28,7 @@
     "graphql": "^16.9.0",
     "install": "^0.13.0",
     "lucide-react": "^0.456.0",
+    "nuqs": "^2.2.3",
     "react": "^19.0.0-rc-2ec26bc4-20241111",
     "react-cookie": "^7.2.2",
     "react-dom": "^19.0.0-rc-2ec26bc4-20241111",
@@ -44,6 +46,7 @@
     "@graphql-codegen/client-preset": "^4.5.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@parcel/watcher": "^2.5.0",
+    "@tailwindcss/typography": "^0.5.15",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.7",
     "@types/react": "^18.3.11",

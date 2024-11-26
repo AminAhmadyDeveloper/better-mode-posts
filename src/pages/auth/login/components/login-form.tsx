@@ -2,7 +2,6 @@ import { gql } from "@/__generated__";
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { z } from "zod";
 import {
@@ -47,7 +46,6 @@ export const LoginForm = () => {
 
   const [executeLoginNetwork, loginNetworkQueryResult] =
     useMutation(loginNetwork);
-  const navigate = useNavigate();
 
   const onSubmitForm = loginNetworkForm.handleSubmit((variables) =>
     executeLoginNetwork({
@@ -56,7 +54,7 @@ export const LoginForm = () => {
         if (data.loginNetwork.accessToken) {
           setUser(data.loginNetwork);
           set("memberToken", data.loginNetwork.accessToken);
-          navigate("/");
+          if (typeof window !== "undefined") window.location.href === "/";
         }
       },
       onError: (error) => {
@@ -119,7 +117,7 @@ export const LoginForm = () => {
       </Form>
       <div className="mt-4 text-center text-sm">
         <Button variant="link" className="w-min">
-          <Link to="/">Continue as Guest</Link>
+          <a href="/">Continue as Guest</a>
         </Button>
       </div>
     </Fragment>
