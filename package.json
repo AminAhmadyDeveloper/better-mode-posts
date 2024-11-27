@@ -10,7 +10,8 @@
     "build:server": "vite build --ssr src/server.tsx --outDir dist/server",
     "preview": "cross-env NODE_ENV=production node api/ssr",
     "gql:compile": "graphql-codegen",
-    "gql:watch": "graphql-codegen -w"
+    "gql:watch": "graphql-codegen -w",
+    "prepare": "npm run gql:compile"
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
